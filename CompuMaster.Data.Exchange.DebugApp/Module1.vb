@@ -10,7 +10,7 @@ Module Module1
     Sub Main()
         Try
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
-            Dim he As New HlsMsExchangeDataAccess("srv20")
+            Dim he As New HlsMsExchangeDataAccess("server-test-exchange")
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeQuery")
             Dim t As DataTable = he.MsExchangeActivities(New Date(2016, 03, 03), New Date(2016, 03, 30, 23, 59, 59))
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AfterQuery")
@@ -35,8 +35,8 @@ Module Module1
 
     Sub TestExchange2007()
         Try
-            'Dim e2007 As New CompuMaster.Data.Exchange2007SP1OrHigher(CompuMaster.Data.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2007_SP1,"", "jwezel@compumaster.de")
-            Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, "srv20")
+            'Dim e2007 As New CompuMaster.Data.Exchange2007SP1OrHigher(CompuMaster.Data.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2007_SP1,"", "test@yourcompany.com")
+            Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, "server-test-exchange")
 
             Dim folderRoot As CompuMaster.Data.MsExchange.FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.Root)
             Dim dirRoot As Directory = folderRoot.Directory.SelectSubFolder("AllItems", False, e2007.DirectorySeparatorChar)
@@ -79,17 +79,17 @@ Module Module1
             Console.WriteLine(u.ToString)
             End
             'e2007.ResolveMailboxOrContactNames("jochen")
-            'e2007.CreateFolder("Test", e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "__Christ-Sein\CVJM\!Archiv", False))
-            'e2007.CreateFolder("__Christ-Sein\CVJM\!Archiv\Test\Sub-Test", e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "", False))
-            'e2007.EmptyFolder(e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "__Christ-Sein\CVJM\!Archiv\Test", False), DeleteMode.MoveToDeletedItems, False)
-            'e2007.DeleteFolder(e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "__Christ-Sein\CVJM\!Archiv\Test", False), DeleteMode.MoveToDeletedItems)
+            'e2007.CreateFolder("Test", e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "CS\Sub\!Archiv", False))
+            'e2007.CreateFolder("CS\Sub\!Archiv\Test\Sub-Test", e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "", False))
+            'e2007.EmptyFolder(e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "CS\Sub\!Archiv\Test", False), DeleteMode.MoveToDeletedItems, False)
+            'e2007.DeleteFolder(e2007.LookupFolder(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Inbox, "CS\Sub\!Archiv\Test", False), DeleteMode.MoveToDeletedItems)
             'Dim MyFolder As FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.PublicFoldersRoot, "Company Contacts", False)
             Dim MyFolder As Directory = dirRoot.SelectSubFolder("Inbox", False, e2007.DirectorySeparatorChar)
             'Console.WriteLine(CompuMaster.Data.DataTables.ConvertToPlainTextTable(e2007.ListFolderItems(MyFolder)))
             Dim dt As DataTable
             dt = Directory.ItemsAsDataTable(MyFolder.Items)
-            'dt = CompuMaster.Data.DataTables.CreateDataTableClone(e2007.ListFolderItems(MyFolder), "subject like '*schüppenhauer*' or subject like '*rund um boppard*'", "", 3)
-            'dt = CompuMaster.Data.DataTables.CreateDataTableClone(e2007.ListFolderItems(MyFolder), "subject='Michael Höfler' or subject = 'Claudia Lamberti'", "", 3)
+            'dt = CompuMaster.Data.DataTables.CreateDataTableClone(e2007.ListFolderItems(MyFolder), "subject like '*sürüm*' or subject like '*rund um berlin*'", "", 3)
+            'dt = CompuMaster.Data.DataTables.CreateDataTableClone(e2007.ListFolderItems(MyFolder), "subject='Michael Pöfler' or subject = 'Elena Lamberti'", "", 3)
             'CompuMaster.Data.Csv.WriteDataTableToCsvFile("g:\cc.csv", dt)
             Dim ht As Hashtable = CompuMaster.Data.DataTables.FindDuplicates(dt.Columns("ID"))
 
