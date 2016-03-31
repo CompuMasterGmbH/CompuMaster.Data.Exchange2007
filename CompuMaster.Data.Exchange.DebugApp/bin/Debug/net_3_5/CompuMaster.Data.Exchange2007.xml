@@ -1,0 +1,484 @@
+﻿<?xml version="1.0"?>
+<doc>
+<assembly>
+<name>
+CompuMaster.Data.Exchange2007
+</name>
+</assembly>
+<members>
+<member name="T:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher">
+ <summary>
+ This solution works only for Exchange 2007, 2010, 2010 SP1, 2013
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateExchangeService">
+ <summary>
+ Create an instance targetting the correct Exchange version
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateConfiguredExchangeService">
+ <summary>
+ Configure a valid connection to the related Exchange server
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CertificateValidationCallBack(System.Object,System.Security.Cryptography.X509Certificates.X509Certificate,System.Security.Cryptography.X509Certificates.X509Chain,System.Net.Security.SslPolicyErrors)">
+ <summary>
+ Ignore any certificate errors
+ </summary>
+ <param name="sender"></param>
+ <param name="certificate"></param>
+ <param name="chain"></param>
+ <param name="sslPolicyErrors"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.WellKnownFolderName">
+ <summary>
+ The list of well known folder names in Exchange
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SendMail(System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[])">
+ <summary>
+ Send an e-mail message
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SendMail(System.String,System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[])">
+ <summary>
+ Send an e-mail message
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="bodyHtml"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SendMail(System.String,System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.EMailAttachment[])">
+ <summary>
+ Send an e-mail message with attachment
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="bodyHtml"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <param name="attachment"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateMessage(System.String,System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.EMailAttachment[])">
+ <summary>
+ Create a new e-mail message
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="bodyHtml"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <param name="attachment"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SaveMailAsDraft(System.String,System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[])">
+ <summary>
+ Save an e-mail message as draft in the drafts folder
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="bodyHtml"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SaveMailAsDraft(System.String,System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.EMailAttachment[])">
+ <summary>
+ Save an e-mail message with attachments as draft in the drafts folder
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="bodyHtml"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <param name="attachment"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SaveMailAsDraft(System.String,System.String,System.String,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.FolderPathRepresentation,CompuMaster.Data.MsExchange.EMailAttachment[])">
+ <summary>
+ Save an e-mail message as a draft
+ </summary>
+ <param name="subject"></param>
+ <param name="bodyPlainText"></param>
+ <param name="bodyHtml"></param>
+ <param name="recipientsTo"></param>
+ <param name="recipientsCc"></param>
+ <param name="recipientsBcc"></param>
+ <param name="folder"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateAppointment(System.String,System.String,System.String,System.DateTime,System.TimeSpan)">
+ <summary>
+ Create an appointment
+ </summary>
+ <param name="subject"></param>
+ <param name="location"></param>
+ <param name="body"></param>
+ <param name="start"></param>
+ <param name="duration"></param>
+ <returns>The unique ID of the appointment for later reference</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateMeetingAppointment(System.String,System.String,System.String,System.DateTime,System.TimeSpan,CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[],CompuMaster.Data.MsExchange.Recipient[])">
+ <summary>
+ Create a meeting appointment
+ </summary>
+ <param name="subject"></param>
+ <param name="location"></param>
+ <param name="body"></param>
+ <param name="start"></param>
+ <param name="duration"></param>
+ <param name="requiredAttendees"></param>
+ <param name="optionalAttendees"></param>
+ <param name="resources"></param>
+ <returns>The unique ID of the appointment for later reference</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.SaveContact(Microsoft.Exchange.WebServices.Data.Contact,CompuMaster.Data.MsExchange.FolderPathRepresentation)">
+ <summary>
+ Save a contact
+ </summary>
+ <param name="contact"></param>
+ <param name="folder"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateNewContact">
+ <summary>
+ Create a new contact
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.LoadContactData(Microsoft.Exchange.WebServices.Data.ItemId)">
+ <summary>
+ Load a contact
+ </summary>
+ <param name="itemID"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.LoadContactData(System.String)">
+ <summary>
+ Load a contact
+ </summary>
+ <param name="itemID"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.FolderClass">
+ <summary>
+ Well known folder classes
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.LookupFolderClass(CompuMaster.Data.MsExchange.FolderPathRepresentation)">
+ <summary>
+ Lookup the folder class
+ </summary>
+ <param name="folder"></param>
+ <returns>The well known folder class or otherwise Custom for a custom FolderClass name at Exchange</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.LookupFolderClassName(CompuMaster.Data.MsExchange.FolderPathRepresentation)">
+ <summary>
+ Lookup the folder class
+ </summary>
+ <param name="folder"></param>
+ <returns>The real folder class name as defined at Exchange</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.FolderClassName(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.FolderClass)">
+ <summary>
+ Convert the well known folder class into the official folder class name as Exchange
+ </summary>
+ <param name="folderClass"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateFolder(System.String,CompuMaster.Data.MsExchange.FolderPathRepresentation)">
+ <summary>
+ Create a new subfolder
+ </summary>
+ <param name="folderName"></param>
+ <param name="baseFolder"></param>
+ <returns>The unique ID of the folder</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateFolder(System.String,CompuMaster.Data.MsExchange.FolderPathRepresentation,CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.FolderClass)">
+ <summary>
+ Create a new subfolder
+ </summary>
+ <param name="folderName"></param>
+ <param name="baseFolder"></param>
+ <returns>The unique ID of the folder</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.CreateFolder(System.String,CompuMaster.Data.MsExchange.FolderPathRepresentation,System.String)">
+ <summary>
+ Create a new subfolder
+ </summary>
+ <param name="folderName"></param>
+ <param name="baseFolder"></param>
+ <returns>The unique ID of the folder</returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.DeleteFolder(CompuMaster.Data.MsExchange.FolderPathRepresentation,Microsoft.Exchange.WebServices.Data.DeleteMode)">
+ <summary>
+ Delete a folder
+ </summary>
+ <param name="folder"></param>
+ <param name="deletionMode"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.EmptyFolder(CompuMaster.Data.MsExchange.FolderPathRepresentation,Microsoft.Exchange.WebServices.Data.DeleteMode,System.Boolean)">
+ <summary>
+ Empty a folder
+ </summary>
+ <param name="folder"></param>
+ <param name="deletionMode"></param>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.LookupFolder(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.WellKnownFolderName)">
+ <summary>
+ Lookup a folder path representation based on its directory structure
+ </summary>
+ <param name="baseFolder"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.DirectorySeparatorChar">
+ <summary>
+ The directory separator char which shall be used in all method calls to this class with parameters specifying a directory structure
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks>The exchange server supports typical directory separator chars like \, / as a normal character within a directory name. That's why the programmer may want to define his own separator char to support required directories correctly.</remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ResolveMailboxOrContactNames(System.String)">
+ <summary>
+ Enumerates possible matches of mailbox accounts/contacts for the searched name
+ </summary>
+ <param name="searchedName"></param>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:CompuMaster.Data.MsExchange.Directory">
+ <summary>
+ Represents a folder in Exchange
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.ExchangeFolder">
+ <summary>
+ Gives full access to the Exchange Managed API for this folder
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.ItemsAsDataTable(CompuMaster.Data.MsExchange.Item[])">
+ <summary>
+ List available items of a folder
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:CompuMaster.Data.MsExchange.Directory.FolderItemPropertyToColumn">
+ <summary>
+ Schema information to a column
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.ItemsAsExchangeItem">
+ <summary>
+ All items of a folder (might be limited due to exchange default to e.g. 1,000 items)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.Items">
+ <summary>
+ All items of a folder (might be limited due to exchange default to e.g. 1,000 items)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.ItemsAsExchangeItem(Microsoft.Exchange.WebServices.Data.SearchFilter,Microsoft.Exchange.WebServices.Data.ItemView)">
+ <summary>
+ All items of a folder (might be limited due to exchange default to e.g. 1,000 items)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.Items(Microsoft.Exchange.WebServices.Data.SearchFilter,Microsoft.Exchange.WebServices.Data.ItemView)">
+ <summary>
+ All items of a folder (might be limited due to exchange default to e.g. 1,000 items)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.MailboxItems(Microsoft.Exchange.WebServices.Data.SearchFilter,Microsoft.Exchange.WebServices.Data.ItemView)">
+ <summary>
+ All items of a folder (might be limited due to exchange default to e.g. 1,000 items)
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.ItemCount">
+ Total amount of items of a folder
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.ItemUnreadCount">
+ <summary>
+ Number of unread items of a folder
+ </summary>
+ <returns></returns>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.ParentFolderID">
+ <summary>
+ The unique ID of the parent folder
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.ID">
+ <summary>
+ The unique ID of the folder
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.FolderClass">
+ <summary>
+ The folder class name
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.DisplayName">
+ <summary>
+ The display name of the folder
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.DisplayPath">
+ <summary>
+ The path of the user separated by back-slashes (\)
+ </summary>
+ <returns>Existing back-slashes in folder's display names might confuse here - in case that back-slahes are possible in display names</returns>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.ParentDirectory">
+ <summary>
+ The relative folder path starting from your initial top directory
+ </summary>
+ <returns></returns>
+ <remarks>Parent folder structure can't be looked up till root folder, that's why it's only up to your initial top directory</remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.PutSubFoldersIntoHierarchy">
+ <summary>
+ Sorting required in advance before an item of a directory (e.g. in \AllItems but pointing to {MsgFolderRoot}\Inbox) looks up its parent directory
+ </summary>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.DefaultFolderView(Microsoft.Exchange.WebServices.Data.FolderTraversal)">
+ <summary>
+ The default view for folders
+ </summary>
+ <returns></returns>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.QuerySubFoldersOfSeveralHierachyLevels">
+ <summary>
+ Query the sub directories of this directory - deep traversal
+ </summary>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.SelectSubFolder(System.String,System.Boolean,System.Char)">
+ <summary>
+ Lookup a directory based on its directory structure
+ </summary>
+ <param name="subfolder">A string containing the relative folder path, e.g. &quot;Inbox\Done&quot;</param>
+ <param name="searchCaseInsensitive">Ignore upper/lower case differences</param>
+ <param name="directorySeparatorChar"></param>
+ <returns></returns>
+</member>
+<member name="P:CompuMaster.Data.MsExchange.Directory.SubFolderCount">
+ <summary>
+ The number of child folders
+ </summary>
+ <value></value>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.Save">
+ <summary>
+ Save changes to this folder
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.Directory.Save(CompuMaster.Data.MsExchange.Directory)">
+ <summary>
+ Save this folder as sub folder of the specified one
+ </summary>
+ <param name="parentFolder"></param>
+ <remarks></remarks>
+</member>
+<member name="T:CompuMaster.Data.MsExchange.FolderPathRepresentation">
+ <summary>
+ A representation of a folder path/ID
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="M:CompuMaster.Data.MsExchange.FolderPathRepresentation.FolderID">
+ <summary>
+ The folder ID as used in Exchange
+ </summary>
+ <returns></returns>
+ <remarks></remarks>
+</member>
+<member name="T:CompuMaster.Data.MsExchange.Recipient">
+ <summary>
+ Represents an attendee or recipient
+ </summary>
+ <remarks></remarks>
+</member>
+<member name="T:My.Resources.Resources">
+<summary>
+  Eine stark typisierte Ressourcenklasse zum Suchen von lokalisierten Zeichenfolgen usw.
+</summary>
+</member>
+<member name="P:My.Resources.Resources.ResourceManager">
+<summary>
+  Gibt die zwischengespeicherte ResourceManager-Instanz zurück, die von dieser Klasse verwendet wird.
+</summary>
+</member>
+<member name="P:My.Resources.Resources.Culture">
+<summary>
+  Überschreibt die CurrentUICulture-Eigenschaft des aktuellen Threads für alle
+  Ressourcenzuordnungen, die diese stark typisierte Ressourcenklasse verwenden.
+</summary>
+</member>
+</members>
+</doc>
