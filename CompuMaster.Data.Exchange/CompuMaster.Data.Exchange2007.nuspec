@@ -6,13 +6,13 @@
     <title>$title$</title>
     <authors>$author$</authors>
     <owners>$author$</owners>
-    <licenseUrl>https://raw.githubusercontent.com/CompuMasterGmbH/CompuMaster.Calendar/master/LICENSE</licenseUrl>
-    <projectUrl>https://github.com/CompuMasterGmbH/CompuMaster.Calendar</projectUrl>
-    <iconUrl>https://raw.githubusercontent.com/CompuMasterGmbH/CompuMaster.Calendar/master/logo_64x64.png</iconUrl>
+    <licenseUrl>https://raw.githubusercontent.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007</projectUrl>
+    <iconUrl>https://raw.githubusercontent.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007/master/logo_64x64.png</iconUrl>
     <requireLicenseAcceptance>false</requireLicenseAcceptance>
-    <description>.NET library with common methods for some usual calendar calculations</description>
+    <description>.NET library with common methods for quick and performant access to Microsoft Exchange server data using Microsoft Exchange Webservices (EWS)</description>
     <releaseNotes></releaseNotes>
-    <copyright>2005-2015 CompuMaster GmbH</copyright>
-    <tags>CompuMaster Common Utils Calendar Begin End Day Week Month Year WeekNumber WeekOfYear WeekDays WorkDays</tags>
+    <copyright>2008-2014,2016 CompuMaster GmbH</copyright>
+    <tags>CompuMaster Common Utils Data Exchange EWS Microsoft Exchange Webservices</tags>
   </metadata>
 </package>
