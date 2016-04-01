@@ -9,7 +9,7 @@
     <licenseUrl>https://raw.githubusercontent.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007/master/LICENSE</licenseUrl>
     <projectUrl>https://github.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007</projectUrl>
     <iconUrl>https://raw.githubusercontent.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007/master/logo_64x64.png</iconUrl>
-    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <requireLicenseAcceptance>true</requireLicenseAcceptance>
     <description>.NET library with common methods for quick and performant access to Microsoft Exchange server data using Microsoft Exchange Webservices (EWS)</description>
     <releaseNotes></releaseNotes>
     <copyright>2008-2014,2016 CompuMaster GmbH</copyright>
