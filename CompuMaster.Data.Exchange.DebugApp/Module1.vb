@@ -9,26 +9,38 @@ Module Module1
 
     Sub Main()
         Try
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
-            Dim he As New HlsMsExchangeDataAccess("server-test-exchange")
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeQuery")
-            Dim t As DataTable = he.MsExchangeActivities(New Date(2016, 03, 03), New Date(2016, 03, 30, 23, 59, 59))
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AfterQuery")
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " TableOutput (Y/N)?")
+            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'MsExchangeActivities 2016-03 (partly)' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
+                Dim he As New HlsMsExchangeDataAccess("server-test-exchange")
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeQuery")
+                Dim t As DataTable = he.MsExchangeActivities(New Date(2016, 3, 3), New Date(2016, 3, 30, 23, 59, 59))
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AfterQuery")
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " TableOutput (Y/N)?")
+                If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
+                    Console.WriteLine()
+                    Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeOutput")
+                    Console.WriteLine(CompuMaster.Data.DataTables.ConvertToPlainTextTableFixedColumnWidths(t))
+                End If
                 Console.WriteLine()
-                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeOutput")
-                Console.WriteLine(CompuMaster.Data.DataTables.ConvertToPlainTextTableFixedColumnWidths(t))
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " RowCount=" & t.Rows.Count)
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
             End If
-            Console.WriteLine()
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " RowCount=" & t.Rows.Count)
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
         Catch ex As Exception
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
             Console.WriteLine(ex.ToString)
         End Try
 
-        'TestExchange2007()
+        Try
+            Console.WriteLine()
+            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'TestExchange2007' (Y/N)?")
+            If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
+                TestExchange2007()
+            End If
+        Catch ex As Exception
+            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
+            Console.WriteLine(ex.ToString)
+        End Try
     End Sub
 
 
@@ -38,18 +50,23 @@ Module Module1
             'Dim e2007 As New CompuMaster.Data.Exchange2007SP1OrHigher(CompuMaster.Data.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2007_SP1,"", "test@yourcompany.com")
             Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, "server-test-exchange")
 
+            Dim folderInbox As CompuMaster.Data.MsExchange.FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.Inbox)
+
             Dim folderRoot As CompuMaster.Data.MsExchange.FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.Root)
             Dim dirRoot As Directory = folderRoot.Directory.SelectSubFolder("AllItems", False, e2007.DirectorySeparatorChar)
-            Dim dirInbox As Directory = dirRoot.InitialRootDirectory.SelectSubFolder("Oberste Ebene des Informationsspeichers\Inbox", False, e2007.DirectorySeparatorChar)
 
             'ShowItems(dirRoot, e2007)
 
             Console.WriteLine(dirRoot.DisplayPath)
             ForEachSubDirectory(dirRoot.InitialRootDirectory, e2007)
+            Console.WriteLine("Total count of subfolders for " & dirRoot.DisplayPath & ": " & folderRoot.Directory.SubFolderCount)
+            Console.WriteLine("Total count of queried subfolders for " & dirRoot.DisplayPath & ": " & folderRoot.Directory.SubFolders.Length)
 
             'Dim folderRoot As CompuMaster.Data.MsExchange.FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.MsgFolderRoot)
             'Dim dirRoot As Directory = folderRoot.Directory.SelectSubFolder("Inbox", False, e2007.DirectorySeparatorChar)
 
+            'Dim dirInbox As Directory = dirRoot.InitialRootDirectory.SelectSubFolder("Oberste Ebene des Informationsspeichers\Inbox", False, e2007.DirectorySeparatorChar)
+            Dim dirInbox As Directory = dirRoot
             ShowItems(dirRoot, e2007)
             ShowItems(Convert2Items(dirRoot, e2007, New Microsoft.Exchange.WebServices.Data.Item() {dirInbox.ItemsAsExchangeItem()(0)}))
             ShowItems(New Item() {dirInbox.Items()(0)})
@@ -140,7 +157,7 @@ Module Module1
 
     Private Sub ShowItems(dir As Directory, e2007 As Exchange2007SP1OrHigher)
 
-        Dim items As ObjectModel.Collection(Of Microsoft.Exchange.WebServices.Data.Item) = dir.ItemsAsExchangeItem(SearchDefault, ItemViewDefault)
+        Dim items As List(Of Microsoft.Exchange.WebServices.Data.Item) = dir.ItemsAsExchangeItem(SearchDefault, ItemViewDefault)
         ShowItems(Convert2Items(dir, e2007, items))
     End Sub
 
@@ -151,7 +168,7 @@ Module Module1
         Next
         Return Result.ToArray
     End Function
-    Private Function Convert2Items(dir As Directory, e2007 As Exchange2007SP1OrHigher, items As ObjectModel.Collection(Of Microsoft.Exchange.WebServices.Data.Item)) As Item()
+    Private Function Convert2Items(dir As Directory, e2007 As Exchange2007SP1OrHigher, items As List(Of Microsoft.Exchange.WebServices.Data.Item)) As Item()
         Dim Result As New List(Of Item)
         For MyItemCounter As Integer = 0 To System.Math.Min(1, items.Count) - 1
             Result.Add(New Item(e2007, items(MyItemCounter), dir))
