@@ -224,8 +224,25 @@ Namespace CompuMaster.Data.MsExchange
         ''' All items of a folder (might be limited due to exchange default to e.g. 1,000 items)
         ''' </summary>
         ''' <returns></returns>
-        Public Function ItemsAsExchangeItem(searchFilter As Microsoft.Exchange.WebServices.Data.SearchFilter, itemView As Microsoft.Exchange.WebServices.Data.ItemView) As ObjectModel.Collection(Of Microsoft.Exchange.WebServices.Data.Item)
-            Return Me.ExchangeFolder.FindItems(searchFilter, itemView).Items
+        Public Function ItemsAsExchangeItem(searchFilter As Microsoft.Exchange.WebServices.Data.SearchFilter, itemView As Microsoft.Exchange.WebServices.Data.ItemView) As List(Of Microsoft.Exchange.WebServices.Data.Item)
+            Dim FoundItems As New List(Of Microsoft.Exchange.WebServices.Data.Item)
+            Dim MaxQueryItems As Integer = itemView.PageSize
+            Dim MoreResultsAvailable As Boolean = True
+
+            'Repeatedly query all partly results and combine them
+            Do While MoreResultsAvailable
+                Dim ItemViewWithOffset As Microsoft.Exchange.WebServices.Data.ItemView = itemView
+                If MaxQueryItems = Integer.MaxValue Then
+                    ItemViewWithOffset.Offset = FoundItems.Count
+                End If
+                Dim QueryResult As FindItemsResults(Of Microsoft.Exchange.WebServices.Data.Item) = Me.ExchangeFolder.FindItems(searchFilter, ItemViewWithOffset)
+                For Each item As Microsoft.Exchange.WebServices.Data.Item In QueryResult.Items
+                    FoundItems.Add(item)
+                Next
+                MoreResultsAvailable = QueryResult.MoreAvailable AndAlso FoundItems.Count < MaxQueryItems
+            Loop
+
+            Return FoundItems
         End Function
 
         ''' <summary>

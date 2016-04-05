@@ -18,6 +18,12 @@ Namespace CompuMaster.Data.MsExchange
         Protected _autoDiscoverServerByEMailAddress As String
         Protected _exchangeVersion As ExchangeVersion
 
+        Friend ReadOnly Property ExchangeServiceVersion As ExchangeVersion
+            Get
+                Return _exchangeVersion
+            End Get
+        End Property
+
         'Private OutlookPropertySetID As New Guid("{00062004-0000-0000-C000-000000000046}")
 
         Public Enum ExchangeVersion As Integer
