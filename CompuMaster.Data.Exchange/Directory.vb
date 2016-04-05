@@ -392,8 +392,8 @@ Namespace CompuMaster.Data.MsExchange
         ''' The default view for folders
         ''' </summary>
         ''' <returns></returns>
-        Friend Shared Function DefaultFolderView(folderTraversal As FolderTraversal) As FolderView
-            Dim Result As New FolderView(Integer.MaxValue)
+        Friend Shared Function DefaultFolderView(folderTraversal As FolderTraversal, offSet As Integer) As FolderView
+            Dim Result As New FolderView(Integer.MaxValue, offSet)
             Result.PropertySet = DefaultPropertySet()
             Result.Traversal = folderTraversal
             Return Result
@@ -416,17 +416,29 @@ Namespace CompuMaster.Data.MsExchange
         ''' </summary>
         Private Function QuerySubFoldersOfSeveralHierachyLevels() As List(Of Directory)
             Dim folderTraversal As FolderTraversal = FolderTraversal.Deep
-            Dim folders As FindFoldersResults = Me.ExchangeFolder.FindFolders(DefaultFolderView(folderTraversal))
-            Return SubFolders2DirectoryHierarchy(folders, Me)
+            Dim FoundFolders As New List(Of Microsoft.Exchange.WebServices.Data.Folder)
+            Dim MoreResultsAvailable As Boolean = True
+
+            'Repeatedly query all partly results and combine them
+            Do While MoreResultsAvailable
+                Dim folders As FindFoldersResults = Me.ExchangeFolder.FindFolders(DefaultFolderView(folderTraversal, FoundFolders.Count))
+                For Each folder As Folder In folders
+                    FoundFolders.Add(folder)
+                Next
+                MoreResultsAvailable = folders.MoreAvailable
+            Loop
+
+            Return SubFolders2DirectoryHierarchy(FoundFolders, Me)
         End Function
 
-        Private Function SubFolders2DirectoryHierarchy(folders As FindFoldersResults, parentDirectory As Directory) As List(Of Directory)
+        Private Function SubFolders2DirectoryHierarchy(folders As List(Of Microsoft.Exchange.WebServices.Data.Folder), parentDirectory As Directory) As List(Of Directory)
             If parentDirectory Is Nothing Then Throw New ArgumentNullException("parentDirectory")
             'hierarchy tree -> folder results might be (sub-)grand-children
             Dim FoundDirectories As New List(Of Directory)
             For Each folder As Folder In folders
                 FoundDirectories.Add(New Directory(_exchangeWrapper, folder, parentDirectory))
             Next
+
             Return FoundDirectories
         End Function
 
