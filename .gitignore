@@ -5,3 +5,4 @@
 /packages
 *.user
 /.vs
+/CompuMaster.Data.Exchange/New-NuGetPackages
