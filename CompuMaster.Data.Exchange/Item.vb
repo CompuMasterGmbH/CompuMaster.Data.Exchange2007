@@ -81,6 +81,39 @@ Namespace CompuMaster.Data.MsExchange
                 End Try
             End Get
         End Property
+
+        Public ReadOnly Property CalendarEntryBegin As DateTime
+            Get
+                If Me.IsAppointment = False OrElse ExtendedData.ContainsKey("Start") = False OrElse ExtendedData.Item("Start") Is Nothing Then
+                    Return Nothing
+                Else
+                    Return CType(ExtendedData.Item("Start"), DateTime)
+                End If
+            End Get
+        End Property
+        Public ReadOnly Property CalendarEntryEnd As DateTime
+            Get
+                If Me.IsAppointment = False OrElse ExtendedData.ContainsKey("End") = False OrElse ExtendedData.Item("End") Is Nothing Then
+                    Return Nothing
+                Else
+                    Return CType(ExtendedData.Item("End"), DateTime)
+                End If
+            End Get
+        End Property
+        Public ReadOnly Property IsAppointment As Boolean
+            Get
+                Try
+                    If _exchangeItem.ItemClass = "IPM.Appointment" Then
+                        Return True
+                    Else
+                        Return False
+                    End If
+                Catch ex As Microsoft.Exchange.WebServices.Data.ServiceObjectPropertyException
+                    Return False
+                End Try
+            End Get
+        End Property
+
         Public ReadOnly Property IsDraft As Boolean
             Get
                 Return _exchangeItem.IsDraft
@@ -158,6 +191,10 @@ Namespace CompuMaster.Data.MsExchange
                 AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.BccRecipients)
                 AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.ReplyTo)
                 AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.Body)
+                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.Start)
+                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.StartTimeZone)
+                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.End)
+                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.EndTimeZone)
                 Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.FirstClassProperties, AdditionalProperties.ToArray)
                 propSet.RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.Text
                 _Result = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet)

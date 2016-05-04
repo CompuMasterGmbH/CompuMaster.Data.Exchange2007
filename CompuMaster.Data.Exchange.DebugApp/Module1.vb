@@ -73,6 +73,13 @@ Module Module1
 
             ShowItems(New Item() {dirInbox.MailboxItems(SearchDefault, ItemViewDefault)(0)})
 
+            Console.WriteLine("Calendar appointments:")
+            'ShowItems(New Item() {dirRoot.MailboxItems(SearchCalendar, ItemViewDefault)(0)})
+            ShowItems(New Item() {dirRoot.MailboxItems(SearchCalendar, ItemViewCalendarDefault)(0)})
+            'ShowItems(dirRoot.MailboxItems(SearchCalendar, ItemViewDefault))
+            'ShowItems(dirRoot.MailboxItems(SearchCalendar, ItemViewCalendarDefault))
+            'ShowItems(dirRoot.MailboxItems(SearchInclCalendarEntries, ItemViewCalendarDefault))
+
             'Dim foldersBelowRoot As Directory() = e2007.ListFolderItems(folderRoot)
             'Dim foldersBelowRoot As Directory() = e2007.ListSubFoldersRecursively(folderRoot)
             'Dim foldersBelowRoot As Directory() = dirRoot.SubFolders
@@ -142,16 +149,42 @@ Module Module1
 
     Private Function SearchDefault() As Microsoft.Exchange.WebServices.Data.SearchFilter
         Dim searchFilterCollection As New Microsoft.Exchange.WebServices.Data.SearchFilter.SearchFilterCollection(Microsoft.Exchange.WebServices.Data.LogicalOperator.And)
-        Dim searchFilterEarlierDate As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsGreaterThanOrEqualTo(Microsoft.Exchange.WebServices.Data.ItemSchema.DateTimeCreated, New DateTime(2016, 03, 10, 14, 00, 0))
-        Dim searchFilterLaterDate As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsLessThanOrEqualTo(Microsoft.Exchange.WebServices.Data.ItemSchema.DateTimeCreated, New DateTime(2016, 03, 24, 14, 59, 59))
+        Dim searchFilterEarlierDate As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsGreaterThanOrEqualTo(Microsoft.Exchange.WebServices.Data.ItemSchema.DateTimeCreated, New DateTime(2016, 3, 10, 14, 0, 0))
+        Dim searchFilterLaterDate As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsLessThanOrEqualTo(Microsoft.Exchange.WebServices.Data.ItemSchema.DateTimeCreated, New DateTime(2016, 3, 24, 14, 59, 59))
         searchFilterCollection.Add(searchFilterEarlierDate)
         searchFilterCollection.Add(searchFilterLaterDate)
         Return searchFilterCollection
     End Function
+
+    Private Function SearchInclCalendarEntries() As Microsoft.Exchange.WebServices.Data.SearchFilter
+        Dim searchFilterCollection As New Microsoft.Exchange.WebServices.Data.SearchFilter.SearchFilterCollection(Microsoft.Exchange.WebServices.Data.LogicalOperator.Or)
+        searchFilterCollection.Add(SearchDefault)
+        searchFilterCollection.Add(SearchCalendar)
+        Return searchFilterCollection
+    End Function
+
+    Private Function SearchCalendar() As Microsoft.Exchange.WebServices.Data.SearchFilter
+        Dim calEntriesSearchFilterCollection As New Microsoft.Exchange.WebServices.Data.SearchFilter.SearchFilterCollection(Microsoft.Exchange.WebServices.Data.LogicalOperator.And)
+        Dim calItemClass As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsEqualTo(Microsoft.Exchange.WebServices.Data.ItemSchema.ItemClass, "IPM.Appointment")
+        Dim calItemEventLatestStart As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsLessThanOrEqualTo(Microsoft.Exchange.WebServices.Data.AppointmentSchema.Start, New DateTime(2016, 3, 24, 14, 59, 59))
+        Dim calItemEventEarliestEnd As New Microsoft.Exchange.WebServices.Data.SearchFilter.IsGreaterThanOrEqualTo(Microsoft.Exchange.WebServices.Data.AppointmentSchema.End, New DateTime(2016, 3, 10, 14, 0, 0))
+        calEntriesSearchFilterCollection.Add(calItemClass)
+        calEntriesSearchFilterCollection.Add(calItemEventLatestStart)
+        calEntriesSearchFilterCollection.Add(calItemEventEarliestEnd)
+        Return calEntriesSearchFilterCollection
+    End Function
+
     Private Function ItemViewDefault() As Microsoft.Exchange.WebServices.Data.ItemView
         Dim itemView As New Microsoft.Exchange.WebServices.Data.ItemView(Integer.MaxValue, 0, Microsoft.Exchange.WebServices.Data.OffsetBasePoint.Beginning)
         itemView.OrderBy.Add(Microsoft.Exchange.WebServices.Data.ItemSchema.DateTimeCreated, Microsoft.Exchange.WebServices.Data.SortDirection.Descending)
         'itemView.Traversal = Microsoft.Exchange.WebServices.Data.ItemTraversal.Associated
+        Return itemView
+    End Function
+
+    Private Function ItemViewCalendarDefault() As Microsoft.Exchange.WebServices.Data.ItemView
+        Dim itemView As New Microsoft.Exchange.WebServices.Data.ItemView(Integer.MaxValue, 0, Microsoft.Exchange.WebServices.Data.OffsetBasePoint.Beginning)
+        itemView.OrderBy.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.End, Microsoft.Exchange.WebServices.Data.SortDirection.Descending)
+        itemView.OrderBy.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.Start, Microsoft.Exchange.WebServices.Data.SortDirection.Descending)
         Return itemView
     End Function
 
@@ -182,6 +215,9 @@ Module Module1
         For MyItemCounter As Integer = 0 To System.Math.Min(1, items.Length) - 1
             Dim entryItem As Item = items(MyItemCounter)
             Console.WriteLine("    " & entryItem.Subject & " / DC:" & entryItem.DateTimeCreated & " / DR:" & entryItem.DateTimeReceived & " / DS:" & entryItem.DateTimeSent)
+            Console.WriteLine("    TYPE:" & entryItem.ExchangeItem.ItemClass)
+            Console.WriteLine("    CalBeg:" & entryItem.CalendarEntryBegin)
+            Console.WriteLine("    CalEnd:" & entryItem.CalendarEntryEnd)
             'Console.WriteLine("    Co:" & entryItem.MimeContent)
             'Console.WriteLine("    BT: " & entryItem.BodyType)
             'Console.WriteLine("    BC: " & entryItem.Body)
