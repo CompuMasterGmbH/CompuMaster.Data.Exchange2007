@@ -1,8 +1,8 @@
 language: csharp
-solution: CompuMaster.Data.Exchange2007.VS2012.sln
-mono:
-  - latest
+dist: trusty
+sudo: required
+mono: none
 install:
   - nuget restore CompuMaster.Data.Exchange2007.VS2012.sln
 script:
-  - xbuild /p:Configuration=Release CompuMaster.Data.Exchange2007.VS2012.sln
+  - ./build.sh --quiet verify
