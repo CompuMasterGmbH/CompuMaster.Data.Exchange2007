@@ -4,6 +4,6 @@ dotnet: 1.0.4
 dist: trusty
 #sudo: required
 mono: none
-script:
-  - xbuild /p:Configuration=Release CompuMaster.Data.Exchange2007.VS2012.sln
+#script:
+#  - xbuild /p:Configuration=Release CompuMaster.Data.Exchange2007.VS2012.sln
 #  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./MyProject.Tests/bin/Release/MyProject.Tests.dll
