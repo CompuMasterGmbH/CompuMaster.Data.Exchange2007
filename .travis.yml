@@ -2,7 +2,7 @@ language: csharp
 solution: CompuMaster.Data.Exchange2007.VS2012.sln
 dotnet: 1.0.1
 dist: trusty
-sudo: required
+#sudo: required
 mono: none
 script:
   - xbuild /p:Configuration=Release CompuMaster.Data.Exchange2007.VS2012.sln
