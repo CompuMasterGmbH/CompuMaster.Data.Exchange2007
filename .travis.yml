@@ -1,8 +1,8 @@
 language: csharp
+solution: CompuMaster.Data.Exchange2007.VS2012.sln
+dotnet: 
+  - 1.0.1
+  - 2.0.0
 dist: trusty
 sudo: required
 mono: none
-install:
-  - nuget restore CompuMaster.Data.Exchange2007.VS2012.sln
-script:
-  - ./build.sh --quiet verify
