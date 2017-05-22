@@ -7,3 +7,6 @@ mono: none
 #script:
 #  - xbuild /p:Configuration=Release CompuMaster.Data.Exchange2007.VS2012.sln
 #  - mono ./packages/xunit.runners.*/tools/xunit.console.clr4.exe ./MyProject.Tests/bin/Release/MyProject.Tests.dll
+script:
+  - dotnet restore
+  - dotnet build 
