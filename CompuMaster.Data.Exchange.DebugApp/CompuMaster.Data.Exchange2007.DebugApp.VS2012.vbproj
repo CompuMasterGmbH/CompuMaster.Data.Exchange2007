@@ -60,11 +60,11 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CompuMaster.Calendar, Version=2016.9.7.100, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuMaster.Calendar.2016.9.7.100\lib\net20\CompuMaster.Calendar.dll</HintPath>
+    <Reference Include="CompuMaster.Calendar, Version=2016.9.7.102, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuMaster.Calendar.2016.9.7.102\lib\net20\CompuMaster.Calendar.dll</HintPath>
     </Reference>
-    <Reference Include="CompuMaster.Data, Version=2.8.2016.824, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuMaster.Data.2.8.2016.824\lib\net20\CompuMaster.Data.dll</HintPath>
+    <Reference Include="CompuMaster.Data, Version=2.8.2019.514, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuMaster.Data.2.8.2019.514\lib\net20\CompuMaster.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
