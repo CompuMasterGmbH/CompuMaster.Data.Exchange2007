@@ -126,9 +126,9 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CompuMaster.Data.Exchange\CompuMaster.Data.Exchange2007.VS2012.vbproj">
+    <ProjectReference Include="..\CompuMaster.Data.Exchange\CM.Data.Exchange2007.vbproj">
       <Project>{113A18B1-00A0-4ADB-8D3D-2DDD338966A1}</Project>
-      <Name>CompuMaster.Data.Exchange2007.VS2012</Name>
+      <Name>CM.Data.Exchange2007</Name>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>
