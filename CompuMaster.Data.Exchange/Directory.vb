@@ -12,10 +12,10 @@ Namespace CompuMaster.Data.MsExchange
     ''' <remarks></remarks>
     Public Class Directory
 
-        Private _exchangeWrapper As Exchange2007SP1OrHigher
-        Private _IsRootElementForSubFolderQuery As Boolean = False
+        Private ReadOnly _exchangeWrapper As Exchange2007SP1OrHigher
+        Private ReadOnly _IsRootElementForSubFolderQuery As Boolean = False
         Private _SubFoldersAlreadyPutIntoHierarchy As Boolean = False
-        Private _folder As Folder
+        Private ReadOnly _folder As Folder
         Private _parentDirectory As Directory
         Private _parentFolder As Folder
 
@@ -93,7 +93,7 @@ Namespace CompuMaster.Data.MsExchange
                 Dim row As System.Data.DataRow = Result.NewRow
                 For Each key As Object In Columns.Keys
                     Dim MyColumn As FolderItemPropertyToColumn = CType(Columns(key), FolderItemPropertyToColumn)
-                    If Not MyColumn.SchemaProperty Is Nothing Then
+                    If MyColumn.SchemaProperty IsNot Nothing Then
                         Try
                             If MyItem.ExchangeItem.Item(MyColumn.SchemaProperty) Is Nothing Then
                                 row(MyColumn.Column) = DBNull.Value
@@ -410,21 +410,23 @@ Namespace CompuMaster.Data.MsExchange
         ''' </summary>
         ''' <returns></returns>
         Friend Shared Function DefaultFolderView(folderTraversal As FolderTraversal, offSet As Integer) As FolderView
-            Dim Result As New FolderView(Integer.MaxValue, offSet)
-            Result.PropertySet = DefaultPropertySet()
-            Result.Traversal = folderTraversal
+            Dim Result As New FolderView(Integer.MaxValue, offSet) With {
+                .PropertySet = DefaultPropertySet(),
+                .Traversal = folderTraversal
+            }
             Return Result
         End Function
 
         Friend Shared Function DefaultPropertySet() As PropertySet
-            Dim AdditionalProperties As New List(Of Microsoft.Exchange.WebServices.Data.PropertyDefinition)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.ChildFolderCount)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.TotalCount)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.UnreadCount)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.FolderClass)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.Id)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.ParentFolderId)
-            AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.FolderSchema.DisplayName)
+            Dim AdditionalProperties As New List(Of Microsoft.Exchange.WebServices.Data.PropertyDefinition) From {
+                Microsoft.Exchange.WebServices.Data.FolderSchema.ChildFolderCount,
+                Microsoft.Exchange.WebServices.Data.FolderSchema.TotalCount,
+                Microsoft.Exchange.WebServices.Data.FolderSchema.UnreadCount,
+                Microsoft.Exchange.WebServices.Data.FolderSchema.FolderClass,
+                Microsoft.Exchange.WebServices.Data.FolderSchema.Id,
+                Microsoft.Exchange.WebServices.Data.FolderSchema.ParentFolderId,
+                Microsoft.Exchange.WebServices.Data.FolderSchema.DisplayName
+            }
             Return New PropertySet(BasePropertySet.FirstClassProperties, AdditionalProperties.ToArray)
         End Function
 
@@ -449,7 +451,7 @@ Namespace CompuMaster.Data.MsExchange
         End Function
 
         Private Function SubFolders2DirectoryHierarchy(folders As List(Of Microsoft.Exchange.WebServices.Data.Folder), parentDirectory As Directory) As List(Of Directory)
-            If parentDirectory Is Nothing Then Throw New ArgumentNullException("parentDirectory")
+            If parentDirectory Is Nothing Then Throw New ArgumentNullException(NameOf(parentDirectory))
             'hierarchy tree -> folder results might be (sub-)grand-children
             Dim FoundDirectories As New List(Of Directory)
             For Each folder As Folder In folders
@@ -496,7 +498,7 @@ Namespace CompuMaster.Data.MsExchange
                             Dim childDir As Directory = Me.SubFoldersOfSeveralHierachyLevels(MyCounter)
                             If childDir.ParentFolderID = Me.ID Then
                                 'found a child folder
-                                childDir._Internal_SetParentDirectory(Me)
+                                childDir.Internal_SetParentDirectory(Me)
                                 _SubFolders.Add(childDir)
                             End If
                         Next
@@ -508,7 +510,7 @@ Namespace CompuMaster.Data.MsExchange
             End Get
         End Property
 
-        Private Sub _Internal_SetParentDirectory(parentDirectory As Directory)
+        Private Sub Internal_SetParentDirectory(parentDirectory As Directory)
             Me._parentDirectory = parentDirectory
             Me._parentFolder = parentDirectory.ExchangeFolder
             Me._ParentFolderID = parentDirectory.ExchangeFolder.Id.UniqueId
@@ -535,7 +537,7 @@ Namespace CompuMaster.Data.MsExchange
             If subFolder = Nothing Then
                 Return Me
             ElseIf subFolder.StartsWith(directorySeparatorChar) Then
-                Throw New ArgumentException("subFolder can't start with a directorySeparatorChar", "subFolder")
+                Throw New ArgumentException("subFolder can't start with a directorySeparatorChar", NameOf(subFolder))
             Else
                 Dim subfoldersSplitted As String() = subFolder.Split(directorySeparatorChar)
                 Dim nextSubFolder As String = subfoldersSplitted(0)

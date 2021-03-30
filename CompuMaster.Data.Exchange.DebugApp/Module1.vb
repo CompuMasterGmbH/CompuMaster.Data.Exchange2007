@@ -8,11 +8,17 @@ Imports CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher
 Module Module1
 
     Sub Main()
+        Const ServerNameDefault As String = "server-test-exchange"
+        Dim ServerName As String
+        Console.WriteLine("Exchange server name for tests [" & ServerNameDefault & "]? ")
+        ServerName = Console.ReadLine()
+        If ServerName = Nothing Then ServerName = ServerNameDefault
+
         Try
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'MsExchangeActivities 2016-03 (partly)' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
                 Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
-                Dim he As New HlsMsExchangeDataAccess("server-test-exchange")
+                Dim he As New HlsMsExchangeDataAccess(ServerName)
                 Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeQuery")
                 Dim t As DataTable = he.MsExchangeActivities(New Date(2016, 3, 3), New Date(2016, 3, 30, 23, 59, 59))
                 Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AfterQuery")
@@ -35,7 +41,7 @@ Module Module1
             Console.WriteLine()
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'TestExchange2007' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
-                TestExchange2007()
+                TestExchange2007(servername)
             End If
         Catch ex As Exception
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
@@ -45,10 +51,10 @@ Module Module1
 
 
 
-    Sub TestExchange2007()
+    Sub TestExchange2007(serverName As String)
         Try
             'Dim e2007 As New CompuMaster.Data.Exchange2007SP1OrHigher(CompuMaster.Data.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2007_SP1,"", "test@yourcompany.com")
-            Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, "server-test-exchange")
+            Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, serverName)
 
             Dim folderInbox As CompuMaster.Data.MsExchange.FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.Inbox)
 
@@ -71,11 +77,22 @@ Module Module1
             ShowItems(Convert2Items(dirRoot, e2007, New Microsoft.Exchange.WebServices.Data.Item() {dirInbox.ItemsAsExchangeItem()(0)}))
             ShowItems(New Item() {dirInbox.Items()(0)})
 
-            ShowItems(New Item() {dirInbox.MailboxItems(SearchDefault, ItemViewDefault)(0)})
+            Dim items As Item()
+            items = dirInbox.MailboxItems(SearchDefault, ItemViewDefault)
+            If items.Length = 0 Then
+                Console.WriteLine("    ---SKPPED:SearchDefault 1st item [no items found]---")
+            Else
+                ShowItems(New Item() {items(0)})
+            End If
 
             Console.WriteLine("Calendar appointments:")
+            items = dirRoot.MailboxItems(SearchCalendar, ItemViewCalendarDefault)
+            If items.Length = 0 Then
+                Console.WriteLine("    ---SKPPED:SearchCalendar 1st item [no items found]---")
+            Else
+                ShowItems(New Item() {items(0)})
+            End If
             'ShowItems(New Item() {dirRoot.MailboxItems(SearchCalendar, ItemViewDefault)(0)})
-            ShowItems(New Item() {dirRoot.MailboxItems(SearchCalendar, ItemViewCalendarDefault)(0)})
             'ShowItems(dirRoot.MailboxItems(SearchCalendar, ItemViewDefault))
             'ShowItems(dirRoot.MailboxItems(SearchCalendar, ItemViewCalendarDefault))
             'ShowItems(dirRoot.MailboxItems(SearchInclCalendarEntries, ItemViewCalendarDefault))
@@ -157,9 +174,10 @@ Module Module1
     End Function
 
     Private Function SearchInclCalendarEntries() As Microsoft.Exchange.WebServices.Data.SearchFilter
-        Dim searchFilterCollection As New Microsoft.Exchange.WebServices.Data.SearchFilter.SearchFilterCollection(Microsoft.Exchange.WebServices.Data.LogicalOperator.Or)
-        searchFilterCollection.Add(SearchDefault)
-        searchFilterCollection.Add(SearchCalendar)
+        Dim searchFilterCollection As New Microsoft.Exchange.WebServices.Data.SearchFilter.SearchFilterCollection(Microsoft.Exchange.WebServices.Data.LogicalOperator.Or) From {
+            SearchDefault(),
+            SearchCalendar()
+        }
         Return searchFilterCollection
     End Function
 

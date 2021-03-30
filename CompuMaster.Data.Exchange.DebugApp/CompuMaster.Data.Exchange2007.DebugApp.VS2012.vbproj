@@ -71,11 +71,11 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CompuMaster.Calendar, Version=2016.9.7.102, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuMaster.Calendar.2016.9.7.102\lib\net20\CompuMaster.Calendar.dll</HintPath>
+    <Reference Include="CompuMaster.Calendar, Version=2021.2.22.100, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuMaster.Calendar.2021.2.22.100\lib\net20\CompuMaster.Calendar.dll</HintPath>
     </Reference>
-    <Reference Include="CompuMaster.Data, Version=2.8.2019.514, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuMaster.Data.2.8.2019.514\lib\net20\CompuMaster.Data.dll</HintPath>
+    <Reference Include="CompuMaster.Data, Version=2.8.2021.331, Culture=neutral, processorArchitecture=MSIL">
+      <HintPath>..\packages\CompuMaster.Data.2.8.2021.331\lib\net20\CompuMaster.Data.dll</HintPath>
     </Reference>
     <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
       <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
@@ -87,6 +87,8 @@
     </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.DirectoryServices" />
+    <Reference Include="System.Web" />
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
@@ -98,6 +100,7 @@
     <Import Include="System.Diagnostics" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="GlobalSuppressions.vb" />
     <Compile Include="HlsMsExchangeDataAccess.vb" />
     <Compile Include="Module1.vb" />
     <Compile Include="My Project\AssemblyInfo.vb" />

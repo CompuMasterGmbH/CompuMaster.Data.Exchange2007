@@ -7,9 +7,9 @@ Imports System.Net
 Namespace CompuMaster.Data.MsExchange
 
     Public Class Item
-        Private _parentDirectory As Directory
-        Private _exchangeItem As Microsoft.Exchange.WebServices.Data.Item
-        Private _service As Exchange2007SP1OrHigher
+        Private ReadOnly _parentDirectory As Directory
+        Private ReadOnly _exchangeItem As Microsoft.Exchange.WebServices.Data.Item
+        Private ReadOnly _service As Exchange2007SP1OrHigher
         Public Sub New(service As Exchange2007SP1OrHigher, item As Microsoft.Exchange.WebServices.Data.Item)
             _exchangeItem = item
             _service = service
@@ -167,8 +167,9 @@ Namespace CompuMaster.Data.MsExchange
                 Static _Result As String = Nothing
                 If _Result Is Nothing Then
                     Try
-                        Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.IdOnly, Microsoft.Exchange.WebServices.Data.EmailMessageSchema.Body)
-                        propSet.RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.HTML
+                        Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.IdOnly, Microsoft.Exchange.WebServices.Data.EmailMessageSchema.Body) With {
+                            .RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.HTML
+                        }
                         Dim message As Microsoft.Exchange.WebServices.Data.EmailMessage = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet)
                         _Result = message.Body.Text
                     Catch ex As Microsoft.Exchange.WebServices.Data.ServiceObjectPropertyException
@@ -182,21 +183,23 @@ Namespace CompuMaster.Data.MsExchange
         Private Function SenderRecipientsDataAndPlainTextBody() As Microsoft.Exchange.WebServices.Data.EmailMessage
             Static _Result As Microsoft.Exchange.WebServices.Data.EmailMessage = Nothing
             If _Result Is Nothing Then
-                Dim AdditionalProperties As New List(Of Microsoft.Exchange.WebServices.Data.PropertyDefinition)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.From)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.DisplayTo)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.DisplayCc)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.ToRecipients)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.CcRecipients)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.BccRecipients)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.ReplyTo)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.EmailMessageSchema.Body)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.Start)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.StartTimeZone)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.End)
-                AdditionalProperties.Add(Microsoft.Exchange.WebServices.Data.AppointmentSchema.EndTimeZone)
-                Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.FirstClassProperties, AdditionalProperties.ToArray)
-                propSet.RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.Text
+                Dim AdditionalProperties As New List(Of Microsoft.Exchange.WebServices.Data.PropertyDefinition) From {
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.From,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.DisplayTo,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.DisplayCc,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.ToRecipients,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.CcRecipients,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.BccRecipients,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.ReplyTo,
+                    Microsoft.Exchange.WebServices.Data.EmailMessageSchema.Body,
+                    Microsoft.Exchange.WebServices.Data.AppointmentSchema.Start,
+                    Microsoft.Exchange.WebServices.Data.AppointmentSchema.StartTimeZone,
+                    Microsoft.Exchange.WebServices.Data.AppointmentSchema.End,
+                    Microsoft.Exchange.WebServices.Data.AppointmentSchema.EndTimeZone
+                }
+                Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.FirstClassProperties, AdditionalProperties.ToArray) With {
+                    .RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.Text
+                }
                 _Result = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet)
             End If
             Return _Result

@@ -221,8 +221,9 @@ Namespace CompuMaster.Data.MsExchange
             If recipientsCc Is Nothing Then recipientsCc = New Recipient() {}
             If recipientsBcc Is Nothing Then recipientsBcc = New Recipient() {}
             'Create the e-mail message, set its properties, and send it to user2@contoso.com, saving a copy to the Sent Items folder. 
-            Dim message As New EmailMessage(Me.CreateConfiguredExchangeService())
-            message.Subject = subject
+            Dim message As New EmailMessage(Me.CreateConfiguredExchangeService()) With {
+                .Subject = subject
+            }
             If bodyHtml <> Nothing Then
                 message.Body = New MessageBody(BodyType.HTML, bodyHtml)
             Else
@@ -249,16 +250,16 @@ Namespace CompuMaster.Data.MsExchange
                     message.BccRecipients.Add(recipient.Name, recipient.EMailAddress)
                 End If
             Next
-            If Not attachment Is Nothing Then
+            If attachment IsNot Nothing Then
                 For Each Item As EMailAttachment In attachment
-                    If Not Item Is Nothing Then
+                    If Item IsNot Nothing Then
                         If Item.FilePath <> "" AndAlso Item.FileName = Nothing Then
                             message.Attachments.AddFileAttachment(Item.FilePath)
-                        ElseIf Item.FileName <> "" AndAlso Not Item.FileData Is Nothing Then
+                        ElseIf Item.FileName <> "" AndAlso Item.FileData IsNot Nothing Then
                             message.Attachments.AddFileAttachment(Item.FileName, Item.FileData)
                         ElseIf Item.FilePath <> "" AndAlso Item.FileName <> "" Then
                             message.Attachments.AddFileAttachment(Item.FileName, Item.FilePath)
-                        ElseIf Item.FileName <> "" AndAlso Not Item.FileStream Is Nothing Then
+                        ElseIf Item.FileName <> "" AndAlso Item.FileStream IsNot Nothing Then
                             message.Attachments.AddFileAttachment(Item.FileName, Item.FileStream)
                         End If
                     End If
@@ -354,15 +355,16 @@ Namespace CompuMaster.Data.MsExchange
         ''' <returns>The unique ID of the appointment for later reference</returns>
         ''' <remarks></remarks>
         Public Function CreateMeetingAppointment(ByVal subject As String, ByVal location As String, ByVal body As String, ByVal start As DateTime, ByVal duration As TimeSpan, ByVal requiredAttendees As Recipient(), ByVal optionalAttendees As Recipient(), ByVal resources As Recipient()) As String
-            If start = Nothing Then Throw New ArgumentNullException("start")
+            If start = Nothing Then Throw New ArgumentNullException(NameOf(start))
             If requiredAttendees Is Nothing Then requiredAttendees = New Recipient() {}
             If optionalAttendees Is Nothing Then optionalAttendees = New Recipient() {}
             If resources Is Nothing Then resources = New Recipient() {}
-            Dim appointment As New Appointment(Me.CreateConfiguredExchangeService())
-            appointment.Subject = subject
-            appointment.Body = body
-            appointment.Location = location
-            appointment.Start = start
+            Dim appointment As New Appointment(Me.CreateConfiguredExchangeService()) With {
+                .Subject = subject,
+                .Body = body,
+                .Location = location,
+                .Start = start
+            }
             appointment.End = appointment.Start.Add(duration)
             For Each Attendee As Recipient In requiredAttendees
                 If Attendee.Name = Nothing Then
@@ -400,8 +402,9 @@ Namespace CompuMaster.Data.MsExchange
         ''' <param name="folder"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification:="<Ausstehend>")>
         Public Function SaveContact(ByVal contact As Contact, ByVal folder As FolderPathRepresentation) As String
-            If contact.IsNew AndAlso Not folder Is Nothing Then
+            If contact.IsNew AndAlso folder IsNot Nothing Then
                 'Create new entry in specified folder
                 contact.Save(folder.FolderID)
             ElseIf contact.IsNew AndAlso folder Is Nothing Then
@@ -410,7 +413,7 @@ Namespace CompuMaster.Data.MsExchange
             ElseIf folder Is Nothing Then
                 'Overwrite existing item
                 contact.Update(ConflictResolutionMode.AutoResolve)
-            ElseIf Not folder Is Nothing AndAlso contact.ParentFolderId.UniqueId <> folder.FolderID Then
+            ElseIf folder IsNot Nothing AndAlso contact.ParentFolderId.UniqueId <> folder.FolderID Then
                 'Save additional item in different folder instead of overwriting existing item
                 contact.Save(folder.FolderID)
             Else
@@ -513,6 +516,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <param name="folderClass"></param>
         ''' <returns></returns>
         ''' <remarks></remarks>
+        <CodeAnalysis.SuppressMessage("Performance", "CA1822:Mark members as static", Justification:="<Ausstehend>")>
         Public Function FolderClassName(ByVal folderClass As FolderClass) As String
             Select Case folderClass
                 Case Exchange2007SP1OrHigher.FolderClass.Calendar
@@ -534,7 +538,7 @@ Namespace CompuMaster.Data.MsExchange
                 Case Exchange2007SP1OrHigher.FolderClass.Custom
                     Throw New NotSupportedException("A custom folder class requires you to use custom folder class name. The purpose of this method is not intended for this folder class type.")
                 Case Else
-                    Throw New ArgumentOutOfRangeException("folderClass")
+                    Throw New ArgumentOutOfRangeException(NameOf(folderClass))
             End Select
         End Function
 
@@ -572,8 +576,9 @@ Namespace CompuMaster.Data.MsExchange
         ''' <returns>The unique ID of the folder</returns>
         ''' <remarks></remarks>
         <Obsolete("Better use Directory class", False)> Public Function CreateFolder(ByVal folderName As String, ByVal baseFolder As FolderPathRepresentation, ByVal customFolderClass As String) As String
-            Dim folder As New Microsoft.Exchange.WebServices.Data.Folder(Me.CreateConfiguredExchangeService)
-            folder.DisplayName = folderName
+            Dim folder As New Microsoft.Exchange.WebServices.Data.Folder(Me.CreateConfiguredExchangeService) With {
+                .DisplayName = folderName
+            }
             If customFolderClass <> Nothing Then
                 folder.FolderClass = customFolderClass
             End If
@@ -638,8 +643,9 @@ Namespace CompuMaster.Data.MsExchange
         ''' <remarks></remarks>
         Public Function ResolveMailboxOrContactNames(ByVal searchedName As String) As Mailbox()
             'Identify the mailbox folders to search for potential name resolution matches.
-            Dim folders As List(Of FolderId) = New List(Of FolderId)
-            folders.Add(New FolderId(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Contacts))
+            Dim folders As List(Of FolderId) = New List(Of FolderId) From {
+                New FolderId(Microsoft.Exchange.WebServices.Data.WellKnownFolderName.Contacts)
+            }
 
             'Search for all contact entries in the default mailbox contacts folder and in Active Directory. This results in a call to EWS.
             Dim coll As NameResolutionCollection = Me.CreateConfiguredExchangeService.ResolveName(searchedName, folders, ResolveNameSearchLocation.ContactsThenDirectory, False)
