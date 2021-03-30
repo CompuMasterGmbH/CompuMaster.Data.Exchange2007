@@ -308,6 +308,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <param name="recipientsCc"></param>
         ''' <param name="recipientsBcc"></param>
         ''' <param name="folder"></param>
+        ''' <returns>Uri for edit (alternatively read) form for created message draft</returns>
         ''' <remarks></remarks>
         Public Function SaveMailAsDraft(ByVal subject As String, ByVal bodyPlainText As String, ByVal bodyHtml As String, ByVal recipientsTo As Recipient(), ByVal recipientsCc As Recipient(), ByVal recipientsBcc As Recipient(), ByVal folder As CompuMaster.Data.MsExchange.FolderPathRepresentation, ByVal attatchment() As EMailAttachment) As Uri
             Dim message As EmailMessage = CreateMessage(subject, bodyPlainText, bodyHtml, recipientsTo, recipientsCc, recipientsBcc, attatchment)
@@ -316,14 +317,20 @@ Namespace CompuMaster.Data.MsExchange
             Else
                 message.Save(folder.FolderID)
             End If
+
             If Me._exchangeVersion = ExchangeVersion.Exchange2007_SP1 Then
                 Return Nothing 'Not supported for exchange 2007
             Else
                 'exchange 2010 supports the lookup of a web client url
+                message.Load(New PropertySet(ItemSchema.WebClientEditFormQueryString, ItemSchema.WebClientReadFormQueryString))
                 Dim url As String = message.WebClientEditFormQueryString
-                Dim uri As New Uri(url)
-                Throw New NotImplementedException("URL lookup of mail still to be implemented")
-                Return uri
+                If url = Nothing Then url = message.WebClientReadFormQueryString
+                If url = Nothing Then
+                    Return Nothing
+                Else
+                    Dim uri As New Uri(url)
+                    Return uri
+                End If
             End If
         End Function
 

@@ -15,6 +15,17 @@ Module Module1
         If ServerName = Nothing Then ServerName = ServerNameDefault
 
         Try
+            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'TestSaveEMailDraft' (Y/N)?")
+            If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
+                TestSaveEMailDraft(ServerName)
+            End If
+            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
+        Catch ex As Exception
+            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
+            Console.WriteLine(ex.ToString)
+        End Try
+
+        Try
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'MsExchangeActivities 2016-03 (partly)' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
                 Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
@@ -49,7 +60,10 @@ Module Module1
         End Try
     End Sub
 
-
+    Sub TestSaveEMailDraft(serverName As String)
+        Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, serverName)
+        e2007.SaveMailAsDraft("CompuMaster.Data.Exchange2007 | TestSaveEMailDraft", "Test Plain Text", Nothing, New Recipient() {New Recipient("jwezel@compumaster.de")}, Nothing, Nothing)
+    End Sub
 
     Sub TestExchange2007(serverName As String)
         Try

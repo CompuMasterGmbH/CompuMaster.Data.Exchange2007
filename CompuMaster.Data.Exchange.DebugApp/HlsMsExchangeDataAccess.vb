@@ -6,7 +6,7 @@ Imports CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher
 
 Public Class HlsMsExchangeDataAccess
 
-    Private _ExchangeServer As String
+    Private ReadOnly _ExchangeServer As String
 
     Public Sub New(exchangeServer As String)
         _ExchangeServer = exchangeServer
@@ -26,6 +26,8 @@ Public Class HlsMsExchangeDataAccess
     ''' </summary>
     ''' <returns></returns>
     ''' <remarks></remarks>
+    <CodeAnalysis.SuppressMessage("Style", "IDE0028:Initialisierung der Sammlung vereinfachen", Justification:="<Ausstehend>")>
+    <CodeAnalysis.SuppressMessage("Performance", "CA1820:Test for empty strings using string length", Justification:="<Ausstehend>")>
     Public Function MsExchangeActivities(activityDateFrom As Date, activityDateTo As Date) As DataTable
         'prepare search filter
         activityDateFrom = Calendar.DateInformation.BeginOfDay(activityDateFrom)
