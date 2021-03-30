@@ -71,20 +71,6 @@
     <CodeAnalysisRuleSet>AllRules.ruleset</CodeAnalysisRuleSet>
   </PropertyGroup>
   <ItemGroup>
-    <Reference Include="CompuMaster.Calendar, Version=2021.2.22.100, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuMaster.Calendar.2021.2.22.100\lib\net20\CompuMaster.Calendar.dll</HintPath>
-    </Reference>
-    <Reference Include="CompuMaster.Data, Version=2.8.2021.331, Culture=neutral, processorArchitecture=MSIL">
-      <HintPath>..\packages\CompuMaster.Data.2.8.2021.331\lib\net20\CompuMaster.Data.dll</HintPath>
-    </Reference>
-    <Reference Include="Microsoft.Exchange.WebServices, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
-    <Reference Include="Microsoft.Exchange.WebServices.Auth, Version=15.0.0.0, Culture=neutral, PublicKeyToken=31bf3856ad364e35, processorArchitecture=MSIL">
-      <HintPath>..\packages\Microsoft.Exchange.WebServices.2.2\lib\40\Microsoft.Exchange.WebServices.Auth.dll</HintPath>
-      <Private>True</Private>
-    </Reference>
     <Reference Include="System" />
     <Reference Include="System.Data" />
     <Reference Include="System.DirectoryServices" />
@@ -138,7 +124,6 @@
       <CustomToolNamespace>My</CustomToolNamespace>
       <LastGenOutput>Settings.Designer.vb</LastGenOutput>
     </None>
-    <None Include="packages.config" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\CompuMaster.Data.Exchange\CompuMaster.Data.Exchange2007.VS2012.vbproj">
@@ -162,6 +147,17 @@
       <ProductName>Windows Installer 3.1</ProductName>
       <Install>true</Install>
     </BootstrapperPackage>
+  </ItemGroup>
+  <ItemGroup>
+    <PackageReference Include="CompuMaster.Calendar">
+      <Version>2021.2.22.100</Version>
+    </PackageReference>
+    <PackageReference Include="CompuMaster.Data">
+      <Version>2.8.2021.331</Version>
+    </PackageReference>
+    <PackageReference Include="Microsoft.Exchange.WebServices">
+      <Version>2.2.0</Version>
+    </PackageReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
