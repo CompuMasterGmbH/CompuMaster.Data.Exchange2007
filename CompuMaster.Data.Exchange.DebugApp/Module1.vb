@@ -1,6 +1,7 @@
 ﻿Option Explicit On
 Option Strict On
 
+Imports CompuMaster
 Imports CompuMaster.Data.MsExchange
 Imports CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher
 'Imports Microsoft.Exchange.WebServices.Data
@@ -13,57 +14,84 @@ Module Module1
         Console.WriteLine("Exchange server name for tests [" & ServerNameDefault & "]? ")
         ServerName = Console.ReadLine()
         If ServerName = Nothing Then ServerName = ServerNameDefault
+        System.Net.ServicePointManager.Expect100Continue = True
+        System.Net.ServicePointManager.SecurityProtocol = System.Net.ServicePointManager.SecurityProtocol Or System.Net.SecurityProtocolType.Tls12 Or System.Net.SecurityProtocolType.Tls13
 
         Try
+            Console.CurrentIndentationLevel = 0
+            Console.WriteLine()
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'TestSaveEMailDraft' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
-                TestSaveEMailDraft(ServerName)
+                Console.CurrentIndentationLevel = 1
+                Console.WriteLine()
+                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart: TestSuite 'TestSaveEMailDraft'")
+                Dim ReviewUri As Uri = TestSaveEMailDraft(ServerName)
+                If ReviewUri <> Nothing Then
+                    Console.OkayLine("E-Mail created as draft: " & ReviewUri.ToString)
+                End If
+            Else
+                Console.WriteLine()
             End If
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
+            Console.CurrentIndentationLevel = 0
+            Console.OkayLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
         Catch ex As Exception
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
-            Console.WriteLine(ex.ToString)
+            Console.CurrentIndentationLevel = 0
+            Console.WarnLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
+            Console.WarnLine(ex.ToString)
         End Try
 
         Try
+            Console.CurrentIndentationLevel = 0
+            Console.WriteLine()
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'MsExchangeActivities 2016-03 (partly)' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
-                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
+                Console.CurrentIndentationLevel = 1
+                Console.WriteLine()
+                Console.OkayLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppStart")
                 Dim he As New HlsMsExchangeDataAccess(ServerName)
                 Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeQuery")
                 Dim t As DataTable = he.MsExchangeActivities(New Date(2016, 3, 3), New Date(2016, 3, 30, 23, 59, 59))
-                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AfterQuery")
+                Console.OkayLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AfterQuery")
                 Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " TableOutput (Y/N)?")
                 If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
                     Console.WriteLine()
-                    Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeOutput")
+                    Console.OkayLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " BeforeOutput")
                     Console.WriteLine(CompuMaster.Data.DataTables.ConvertToPlainTextTableFixedColumnWidths(t))
                 End If
                 Console.WriteLine()
-                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " RowCount=" & t.Rows.Count)
-                Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
+                Console.OkayLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " RowCount=" & t.Rows.Count)
+                Console.CurrentIndentationLevel = 0
+                Console.OkayLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppEnd")
             End If
         Catch ex As Exception
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
-            Console.WriteLine(ex.ToString)
+            Console.CurrentIndentationLevel = 0
+            Console.WarnLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
+            Console.WarnLine(ex.ToString)
         End Try
 
         Try
+            Console.CurrentIndentationLevel = 0
             Console.WriteLine()
             Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " Execute TestSuite 'TestExchange2007' (Y/N)?")
             If Console.ReadKey().KeyChar.ToString.ToLowerInvariant = "y" Then
-                TestExchange2007(servername)
+                Console.CurrentIndentationLevel = 1
+                Console.WriteLine()
+                TestExchange2007(ServerName)
+            Else
+                Console.WriteLine()
             End If
+            Console.CurrentIndentationLevel = 0
         Catch ex As Exception
-            Console.WriteLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
-            Console.WriteLine(ex.ToString)
+            Console.CurrentIndentationLevel = 0
+            Console.WarnLine(Now.ToString("yyyy-MM-dd HH:mm:ss") & " AppError")
+            Console.WarnLine(ex.ToString)
         End Try
     End Sub
 
-    Sub TestSaveEMailDraft(serverName As String)
+    Function TestSaveEMailDraft(serverName As String) As System.Uri
         Dim e2007 As New CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher(CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher.ExchangeVersion.Exchange2010_SP1, serverName)
-        e2007.SaveMailAsDraft("CompuMaster.Data.Exchange2007 | TestSaveEMailDraft", "Test Plain Text", Nothing, New Recipient() {New Recipient("jwezel@compumaster.de")}, Nothing, Nothing)
-    End Sub
+        Return e2007.SaveMailAsDraft("CompuMaster.Data.Exchange2007 | TestSaveEMailDraft", "Test Plain Text", Nothing, New Recipient() {New Recipient("jwezel@compumaster.de")}, Nothing, Nothing)
+    End Function
 
     Sub TestExchange2007(serverName As String)
         Try
@@ -77,10 +105,10 @@ Module Module1
 
             'ShowItems(dirRoot, e2007)
 
-            Console.WriteLine(dirRoot.DisplayPath)
+            Console.OkayLine(dirRoot.DisplayPath)
             ForEachSubDirectory(dirRoot.InitialRootDirectory, e2007)
-            Console.WriteLine("Total count of subfolders for " & dirRoot.DisplayPath & ": " & folderRoot.Directory.SubFolderCount)
-            Console.WriteLine("Total count of queried subfolders for " & dirRoot.DisplayPath & ": " & folderRoot.Directory.SubFolders.Length)
+            Console.OkayLine("Total count of subfolders for " & dirRoot.DisplayPath & ": " & folderRoot.Directory.SubFolderCount)
+            Console.OkayLine("Total count of queried subfolders for " & dirRoot.DisplayPath & ": " & folderRoot.Directory.SubFolders.Length)
 
             'Dim folderRoot As CompuMaster.Data.MsExchange.FolderPathRepresentation = e2007.LookupFolder(WellKnownFolderName.MsgFolderRoot)
             'Dim dirRoot As Directory = folderRoot.Directory.SelectSubFolder("Inbox", False, e2007.DirectorySeparatorChar)
@@ -94,7 +122,7 @@ Module Module1
             Dim items As Item()
             items = dirInbox.MailboxItems(SearchDefault, ItemViewDefault)
             If items.Length = 0 Then
-                Console.WriteLine("    ---SKPPED:SearchDefault 1st item [no items found]---")
+                Console.OkayLine("    ---SKIPPED:SearchDefault 1st item [no items found]---")
             Else
                 ShowItems(New Item() {items(0)})
             End If
@@ -102,7 +130,7 @@ Module Module1
             Console.WriteLine("Calendar appointments:")
             items = dirRoot.MailboxItems(SearchCalendar, ItemViewCalendarDefault)
             If items.Length = 0 Then
-                Console.WriteLine("    ---SKPPED:SearchCalendar 1st item [no items found]---")
+                Console.OkayLine("    ---SKIPPED:SearchCalendar 1st item [no items found]---")
             Else
                 ShowItems(New Item() {items(0)})
             End If
@@ -115,10 +143,9 @@ Module Module1
             'Dim foldersBelowRoot As Directory() = e2007.ListSubFoldersRecursively(folderRoot)
             'Dim foldersBelowRoot As Directory() = dirRoot.SubFolders
             Dim testSubFolder As Directory = dirRoot
-            Console.WriteLine("TEST SUBS FOR: " & testSubFolder.DisplayName)
-            Console.WriteLine("TEST SUBS FOR: " & testSubFolder.ID)
-            Console.WriteLine("TEST SUBS FOR: " & testSubFolder.SubFolderCount)
-            'Console.WriteLine("TEST SUBS FOR: " & testSubFolder.SubFolderCoun)
+            Console.OkayLine("TEST SUBS FOR: " & testSubFolder.DisplayName)
+            Console.OkayLine("TEST SUBS FOR: " & testSubFolder.ID)
+            Console.OkayLine("TEST SUBS FOR: " & testSubFolder.SubFolderCount)
             'foldersBelowRoot = e2007.ListSubFolders(New FolderPathRepresentation(testSubFolder.ExchangeFolder.))
 
             'Dim itemView As New Microsoft.Exchange.WebServices.Data.ItemView(Integer.MaxValue, 0, Microsoft.Exchange.WebServices.Data.OffsetBasePoint.Beginning)
@@ -152,8 +179,8 @@ Module Module1
             'Console.WriteLine(CompuMaster.Data.DataTables.ConvertToPlainTextTable(dt))
             'Console.WriteLine(CompuMaster.Data.DataTables.ConvertToPlainTextTable(dt.Clone))
             Console.WriteLine(vbNewLine & "Data Rows: 2 first exemplary IDs:")
-            Console.WriteLine(dt.Rows(0)("ID"))
-            Console.WriteLine(dt.Rows(1)("ID"))
+            Console.WriteLine(CompuMaster.Data.Utils.NoDBNull(dt.Rows(0)("ID"), "<NULL>"))
+            Console.WriteLine(CompuMaster.Data.Utils.NoDBNull(dt.Rows(1)("ID"), "<NULL>"))
             Dim IDsAreEqual As Boolean = (dt.Rows(0)("ID").ToString = dt.Rows(1)("ID").ToString)
             If IDsAreEqual = False Then Console.WriteLine(Space(FirstDifferentChar(dt.Rows(0)("ID").ToString, dt.Rows(1)("ID").ToString)) & "^")
             Console.WriteLine("IDs are equal=" & IDsAreEqual.ToString.ToUpper)
@@ -174,7 +201,7 @@ Module Module1
             'e2007.CreateAppointment("Test-Appointment", "nowhere", "from CompuMaster.Data.Exchange2007SP1OrHigher" & vbNewLine & "on " & Now.ToString, Now.AddMinutes(5), New TimeSpan(0, 30, 0))
             'e2007.CreateMeetingAppointment("Test-Meeting", "nowhere", "from CompuMaster.Data.Exchange2007SP1OrHigher" & vbNewLine & "on " & Now.ToString, Now.AddMinutes(5), New TimeSpan(0, 30, 0), New Recipient() {New Recipient("jwezel@compumaster.de")}, Nothing, Nothing)
         Catch ex As Exception
-            Console.WriteLine("Error: " + ex.ToString)
+            Console.WarnLine("Error: " + ex.ToString)
         End Try
     End Sub
 
@@ -267,7 +294,7 @@ Module Module1
 
         For Each dirItem As Directory In dir.SubFolders
             Console.Write(dirItem.ToString)
-            Console.WriteLine(" (F:" & dirItem.SubFolderCount & " / U:" & dirItem.ItemUnreadCount & " / T:" & dirItem.ItemCount & ")")
+            Console.OkayLine(" (F:" & dirItem.SubFolderCount & " / U:" & dirItem.ItemUnreadCount & " / T:" & dirItem.ItemCount & ")")
 
             'Dim itemView As New Microsoft.Exchange.WebServices.Data.ItemView(Integer.MaxValue, 0, Microsoft.Exchange.WebServices.Data.OffsetBasePoint.Beginning)
             'Dim searchFilterCollection As New Microsoft.Exchange.WebServices.Data.SearchFilter.SearchFilterCollection(Microsoft.Exchange.WebServices.Data.LogicalOperator.And)
