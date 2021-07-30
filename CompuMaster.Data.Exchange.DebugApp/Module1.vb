@@ -4,7 +4,11 @@ Option Strict On
 Imports CompuMaster
 Imports CompuMaster.Data.MsExchange
 Imports CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher
+Imports CompuMaster.VisualBasicCompatibility
 'Imports Microsoft.Exchange.WebServices.Data
+Imports System.Data
+Imports System.DateTime
+
 
 Module Module1
 
@@ -182,7 +186,7 @@ Module Module1
             Console.WriteLine(CompuMaster.Data.Utils.NoDBNull(dt.Rows(0)("ID"), "<NULL>"))
             Console.WriteLine(CompuMaster.Data.Utils.NoDBNull(dt.Rows(1)("ID"), "<NULL>"))
             Dim IDsAreEqual As Boolean = (dt.Rows(0)("ID").ToString = dt.Rows(1)("ID").ToString)
-            If IDsAreEqual = False Then Console.WriteLine(Space(FirstDifferentChar(dt.Rows(0)("ID").ToString, dt.Rows(1)("ID").ToString)) & "^")
+            If IDsAreEqual = False Then Console.WriteLine(Strings.Space(FirstDifferentChar(dt.Rows(0)("ID").ToString, dt.Rows(1)("ID").ToString)) & "^")
             Console.WriteLine("IDs are equal=" & IDsAreEqual.ToString.ToUpper)
 
             Console.WriteLine(vbNewLine & "DUPS:")

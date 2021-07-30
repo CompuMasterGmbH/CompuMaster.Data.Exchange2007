@@ -3,6 +3,8 @@ Option Strict On
 
 Imports CompuMaster.Data.MsExchange
 Imports CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher
+Imports CompuMaster.VisualBasicCompatibility
+Imports System.Data
 
 Public Class HlsMsExchangeDataAccess
 
@@ -82,7 +84,7 @@ Public Class HlsMsExchangeDataAccess
                 row("DisplayCc") = entryItem.DisplayCc
                 Dim DisplayPath As String = entryItem.ParentDirectory.DisplayPath
                 If DisplayPath.StartsWith(folderMsgRoot.Directory.DisplayPath & "\") Then
-                    DisplayPath = DisplayPath.Substring(Len(folderMsgRoot.Directory.DisplayPath & "\"))
+                    DisplayPath = DisplayPath.Substring(Strings.Len(folderMsgRoot.Directory.DisplayPath & "\"))
                 End If
                 row("MailboxFolder") = DisplayPath
                 Result.Rows.Add(row)
