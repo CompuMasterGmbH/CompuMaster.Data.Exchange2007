@@ -55,7 +55,7 @@ Namespace CompuMaster.Data.MsExchange
             End Get
         End Property
 
-        Private Shared Sub ItemsAsDataTable_AssignValueToColumnOrJitCreateColumn(ByVal value As String, ByVal row As DataRow, ByVal columnName As String)
+        Private Shared Sub ItemsAsDataTable_AssignValueToColumnOrJitCreateColumn(ByVal value As String, ByVal row As System.Data.DataRow, ByVal columnName As String)
             If row.Table.Columns.Contains(columnName) = False Then
                 row.Table.Columns.Add(columnName, GetType(String))
             End If
@@ -68,7 +68,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Shared Function ItemsAsDataTable(items As Item()) As System.Data.DataTable
-            Dim Result As New DataTable("items")
+            Dim Result As New System.Data.DataTable("items")
             Dim ProcessedSchemas As New ArrayList
             Dim Columns As New Hashtable
             'Add all items into the result table with all of their properties as complete as possible

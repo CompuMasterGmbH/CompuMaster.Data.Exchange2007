@@ -128,12 +128,6 @@
     </None>
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\CompuMaster.Data.Exchange\CM.Data.Exchange2007.vbproj">
-      <Project>{113A18B1-00A0-4ADB-8D3D-2DDD338966A1}</Project>
-      <Name>CM.Data.Exchange2007</Name>
-    </ProjectReference>
-  </ItemGroup>
-  <ItemGroup>
     <BootstrapperPackage Include="Microsoft.Net.Client.3.5">
       <Visible>False</Visible>
       <ProductName>.NET Framework 3.5 SP1 Client Profile</ProductName>
@@ -163,6 +157,12 @@
     <PackageReference Include="Microsoft.Exchange.WebServices">
       <Version>2.2.0</Version>
     </PackageReference>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\CompuMaster.Data.Exchange\CM.Data.Exchange2007.vbproj">
+      <Project>{113a18b1-00a0-4adb-8d3d-2ddd338966a1}</Project>
+      <Name>CM.Data.Exchange2007</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.VisualBasic.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
