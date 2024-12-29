@@ -3,6 +3,7 @@ Option Explicit On
 
 Imports Microsoft.Exchange.WebServices.Data
 Imports System.Net
+Imports System.Data
 
 Namespace CompuMaster.Data.MsExchange
 
@@ -205,7 +206,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' </summary>
         ''' <returns></returns>
         Public Function ItemsAsExchangeItem() As ObjectModel.Collection(Of Microsoft.Exchange.WebServices.Data.Item)
-            Return Me.ExchangeFolder.FindItems(New ItemView(Integer.MaxValue)).Items
+            Return Me.ExchangeFolder.FindItems(New ItemView(Integer.MaxValue)).Result.Items
         End Function
 
         ''' <summary>
@@ -235,7 +236,7 @@ Namespace CompuMaster.Data.MsExchange
                 If MaxQueryItems = Integer.MaxValue Then
                     ItemViewWithOffset.Offset = FoundItems.Count
                 End If
-                Dim QueryResult As FindItemsResults(Of Microsoft.Exchange.WebServices.Data.Item) = Me.ExchangeFolder.FindItems(searchFilter, ItemViewWithOffset)
+                Dim QueryResult As FindItemsResults(Of Microsoft.Exchange.WebServices.Data.Item) = Me.ExchangeFolder.FindItems(searchFilter, ItemViewWithOffset).Result
                 For Each item As Microsoft.Exchange.WebServices.Data.Item In QueryResult.Items
                     FoundItems.Add(item)
                 Next
@@ -440,7 +441,7 @@ Namespace CompuMaster.Data.MsExchange
 
             'Repeatedly query all partly results and combine them
             Do While MoreResultsAvailable
-                Dim folders As FindFoldersResults = Me.ExchangeFolder.FindFolders(DefaultFolderView(folderTraversal, FoundFolders.Count))
+                Dim folders As FindFoldersResults = Me.ExchangeFolder.FindFolders(DefaultFolderView(folderTraversal, FoundFolders.Count)).Result
                 For Each folder As Folder In folders
                     FoundFolders.Add(folder)
                 Next

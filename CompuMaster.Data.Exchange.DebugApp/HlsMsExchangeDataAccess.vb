@@ -3,6 +3,7 @@ Option Strict On
 
 Imports CompuMaster.Data.MsExchange
 Imports CompuMaster.Data.MsExchange.Exchange2007SP1OrHigher
+Imports System.Data
 
 Public Class HlsMsExchangeDataAccess
 

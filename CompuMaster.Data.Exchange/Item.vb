@@ -170,7 +170,7 @@ Namespace CompuMaster.Data.MsExchange
                         Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.IdOnly, Microsoft.Exchange.WebServices.Data.EmailMessageSchema.Body) With {
                             .RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.HTML
                         }
-                        Dim message As Microsoft.Exchange.WebServices.Data.EmailMessage = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet)
+                        Dim message As Microsoft.Exchange.WebServices.Data.EmailMessage = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet).Result
                         _Result = message.Body.Text
                     Catch ex As Microsoft.Exchange.WebServices.Data.ServiceObjectPropertyException
                         _Result = ""
@@ -200,7 +200,7 @@ Namespace CompuMaster.Data.MsExchange
                 Dim propSet As New Microsoft.Exchange.WebServices.Data.PropertySet(Microsoft.Exchange.WebServices.Data.BasePropertySet.FirstClassProperties, AdditionalProperties.ToArray) With {
                     .RequestedBodyType = Microsoft.Exchange.WebServices.Data.BodyType.Text
                 }
-                _Result = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet)
+                _Result = Microsoft.Exchange.WebServices.Data.EmailMessage.Bind(_service.CreateConfiguredExchangeService, _exchangeItem.Id, propSet).Result
             End If
             Return _Result
         End Function

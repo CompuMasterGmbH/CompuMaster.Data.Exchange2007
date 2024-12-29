@@ -446,7 +446,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function LoadContactData(ByVal itemID As ItemId) As Contact
-            Return Contact.Bind(Me.CreateConfiguredExchangeService, itemID)
+            Return Contact.Bind(Me.CreateConfiguredExchangeService, itemID).Result
         End Function
 
         ''' <summary>
@@ -513,7 +513,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <remarks></remarks>
         <Obsolete("Better use Directory class", False)> Public Function LookupFolderClassName(ByVal folder As FolderPathRepresentation) As String
             Dim lookupfolder As Microsoft.Exchange.WebServices.Data.Folder
-            lookupfolder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, folder.FolderID)
+            lookupfolder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, folder.FolderID).Result
             Return lookupfolder.FolderClass
         End Function
 
@@ -600,7 +600,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <param name="deletionMode"></param>
         ''' <remarks></remarks>
         <Obsolete("Better use Directory class", False)> Public Sub DeleteFolder(ByVal folder As FolderPathRepresentation, ByVal deletionMode As DeleteMode)
-            Dim dropFolder As Folder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, folder.FolderID)
+            Dim dropFolder As Folder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, folder.FolderID).Result
             dropFolder.Delete(deletionMode)
         End Sub
 
@@ -611,7 +611,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <param name="deletionMode"></param>
         ''' <remarks></remarks>
         <Obsolete("Better use Directory class", False)> Public Sub EmptyFolder(ByVal folder As FolderPathRepresentation, ByVal deletionMode As DeleteMode, ByVal deleteSubFolders As Boolean)
-            Dim emptyFolder As Folder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, folder.FolderID)
+            Dim emptyFolder As Folder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, folder.FolderID).Result
             emptyFolder.Empty(deletionMode, deleteSubFolders)
         End Sub
 
@@ -622,7 +622,7 @@ Namespace CompuMaster.Data.MsExchange
         ''' <returns></returns>
         ''' <remarks></remarks>
         Public Function LookupFolder(ByVal baseFolder As WellKnownFolderName) As FolderPathRepresentation
-            Dim folder As Folder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, CType(baseFolder, Microsoft.Exchange.WebServices.Data.WellKnownFolderName))
+            Dim folder As Folder = Microsoft.Exchange.WebServices.Data.Folder.Bind(Me.CreateConfiguredExchangeService, CType(baseFolder, Microsoft.Exchange.WebServices.Data.WellKnownFolderName)).Result
             Return New FolderPathRepresentation(Me, folder)
         End Function
 
@@ -655,7 +655,7 @@ Namespace CompuMaster.Data.MsExchange
             }
 
             'Search for all contact entries in the default mailbox contacts folder and in Active Directory. This results in a call to EWS.
-            Dim coll As NameResolutionCollection = Me.CreateConfiguredExchangeService.ResolveName(searchedName, folders, ResolveNameSearchLocation.ContactsThenDirectory, False)
+            Dim coll As NameResolutionCollection = Me.CreateConfiguredExchangeService.ResolveName(searchedName, folders, ResolveNameSearchLocation.ContactsThenDirectory, False).Result
 
             Dim Results As New ArrayList
             For Each nameRes As NameResolution In coll
