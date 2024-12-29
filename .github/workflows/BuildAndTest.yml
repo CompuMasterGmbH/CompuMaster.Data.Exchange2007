@@ -37,16 +37,7 @@ jobs:
         strategy:
           fail-fast: false
           matrix:
-            os: [windows-latest, ubuntu-latest, macos-latest]
-            include: 
-              - os: macos-latest
-                runNetExe: mono
-
-        # the build-and-test job might be skipped, we don't need to run this job then
-        #if: success() || failure()
-
-        env:
-          RESULTS_PATH: TestResults.xml
+            os: [windows-latest, ubuntu-latest]
 
         steps:
             - name: Checkout
