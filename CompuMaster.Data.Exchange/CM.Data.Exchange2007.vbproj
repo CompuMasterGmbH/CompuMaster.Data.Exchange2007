@@ -16,6 +16,7 @@
     <Title>CompuMaster.Data.Exchange2007</Title>
     <PackageIcon>logo_64x64.png</PackageIcon>
     <PackageProjectUrl>https://github.com/CompuMasterGmbH/CompuMaster.Data.Exchange2007</PackageProjectUrl>
+    <Description>.NET library with common methods for quick and performant access to Microsoft Exchange server data using Microsoft Exchange Webservices (EWS)</Description>
   </PropertyGroup>
   <ItemGroup>
     <None Include="..\logo_64x64.png">
