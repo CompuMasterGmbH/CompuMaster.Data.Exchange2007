@@ -10,8 +10,8 @@
     <AssemblyTitle>CompuMaster.Data.Exchange2007 - MIT license edition</AssemblyTitle>
     <Company>CompuMaster GmbH</Company>
     <Product>CompuMaster.Data.Exchange2007</Product>
-    <Copyright>2008-2014,2016,2017,2019,2021,2024 CompuMaster GmbH</Copyright>
-    <Version>2024.12.29.100</Version>
+    <Copyright>2008-2014,2016,2017,2019,2021,2024,2026 CompuMaster GmbH</Copyright>
+    <Version>2026.11.12.100</Version>
     <GenerateDocumentationFile>True</GenerateDocumentationFile>
     <Title>CompuMaster.Data.Exchange2007</Title>
     <PackageIcon>logo_64x64.png</PackageIcon>
